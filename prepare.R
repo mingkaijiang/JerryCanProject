@@ -11,7 +11,11 @@ pacman::p_load(dplyr,
                lubridate,
                ggplot2,
                viridis,
-               cowplot)    
+               cowplot,
+               tidyverse,
+               ggpubr,
+               rstatix,
+               data.table)    
 
 
 #### Sourcing all R files in the modules subdirectory

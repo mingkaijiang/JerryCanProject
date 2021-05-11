@@ -334,5 +334,317 @@ save_plot(paste0("output/temporal_effect_comparison.pdf"),
           combined_plot, base_width=12, base_height = 8)
 
 
-### Perform statistical test
-lm1 <- lm(Free~Location*Date, data=myDF)
+### Perform statistical test - prepare
+myDF <- data.table(myDF)
+myDF$Date <- as.factor(as.character(myDF$Date))
+myDF$Location <- as.factor(myDF$Location)
+
+##########################################################
+### make statistics and plots - free
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "Free",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = Free, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = Free, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        Free ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/Free_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+
+
+##########################################################
+### make statistics and plots - total
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "Total",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = Total, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = Total, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        Total ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/Total_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+
+
+##########################################################
+### make statistics and plots - turbidity
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "Turbidity",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = Turbidity, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = Turbidity, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        Turbidity ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/Turbidity_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+
+##########################################################
+### make statistics and plots - TDS
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "TDS",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = TDS, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+#one.way <- myDF %>%
+#    group_by(Date) %>%
+#    anova_test(dv = TDS, wid = Jerrycan, within = Location) %>%
+#    get_anova_table() %>%
+#    adjust_pvalue(method = "bonferroni")
+#one.way
+#
+
+### pair-wise comparison 
+#pwc <- myDF %>%
+#    group_by(Date) %>%
+#    pairwise_t_test(
+#        TDS ~ Location, paired = TRUE,
+#        p.adjust.method = "bonferroni"
+#    )
+#pwc
+
+# Visualization: box plots with p-values
+#pwc <- pwc %>% add_xy_position(x = "Date")
+#pdf("output/TDS_statistics.pdf", width=12, height=10)
+#bxp + 
+#    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+#    labs(
+#        subtitle = get_test_label(res.aov, detailed = TRUE),
+#        caption = get_pwc_label(pwc)
+#    )
+#dev.off()
+
+
+##########################################################
+### make statistics and plots - EC
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "EC",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = EC, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = EC, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        EC ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/EC_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+##########################################################
+### make statistics and plots - pH
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "pH",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = pH, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = pH, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        pH ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/pH_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+##########################################################
+### make statistics and plots - Temp
+bxp <- ggboxplot(
+    myDF, x = "Date", y = "Temp",
+    color = "Location", palette = "jco"
+)
+bxp
+
+### anova test
+res.aov <- anova_test(
+    data = myDF, dv = Temp, wid = Jerrycan,
+    within = c(Location, Date))
+get_anova_table(res.aov)
+
+### post hoc
+one.way <- myDF %>%
+    group_by(Date) %>%
+    anova_test(dv = Temp, wid = Jerrycan, within = Location) %>%
+    get_anova_table() %>%
+    adjust_pvalue(method = "bonferroni")
+one.way
+
+
+### pair-wise comparison 
+pwc <- myDF %>%
+    group_by(Date) %>%
+    pairwise_t_test(
+        Temp ~ Location, paired = TRUE,
+        p.adjust.method = "bonferroni"
+    )
+pwc
+
+# Visualization: box plots with p-values
+pwc <- pwc %>% add_xy_position(x = "Date")
+pdf("output/Temp_statistics.pdf", width=12, height=10)
+bxp + 
+    stat_pvalue_manual(pwc, tip.length = 0, hide.ns = TRUE) +
+    labs(
+        subtitle = get_test_label(res.aov, detailed = TRUE),
+        caption = get_pwc_label(pwc)
+    )
+dev.off()
+
+
+### end
